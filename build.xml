@@ -1,5 +1,6 @@
-<project name="most_active_cookie" default="compile" basedir="." >
+<project name="Project1a" default="compile" basedir="." >
 	<description>
+		Quantcast build file
 	</description>
 
 	<presetdef name="my.javac">
@@ -8,14 +9,22 @@
 	</presetdef>
 	<property name="lib.dir" location="lib"/>
 	<path id="build.classpath">
-		<fileset dir="">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
 		</fileset>
 	</path>
-	<property name="source.dir" location=""/> 
-	<property name="build.dir" location=""/> 
+	<!-- global properties for this build file -->
+	<property name="source.dir" location="src"/> 
+	<property name="build.dir" location="bin"/> 
+	<property name="doc.dir" location="doc"/>
+	<property name="test.dir" location="test"/>
+	<property name="dist.dir" location="dist"/>
 
+	<!-- set up some directories used by this project -->
+	<target name="init" description="setup project directories">
+	</target>
 	<!-- Compile the java code in src dir into build dir -->
-	<target name="compile" description="compile java sources" >
+	<target name="compile" depends="init" description="compile java sources" >
 		<my.javac srcdir="${source.dir}" destdir="${build.dir}" />
 	</target>
 	<!-- Run the java tests in src dir -->
@@ -29,7 +38,7 @@
 			</classpath>    
 			<batchtest>
 			<fileset dir="${source.dir}">
-					<include name="**/*Test*" />
+					<include name="**/*test*" />
 			</fileset>
 			</batchtest>
 			<formatter type="brief" usefile="false"/>
@@ -37,12 +46,4 @@
 	</target>  
 
 
-	<!-- Create jar files from java src files in dist folder-->	
-	<target name="dist" depends="compile" description="create jar files">
-		<jar destfile="most_active_cookie.jar" basedir="">
-			<manifest>
-    			<attribute name="Main-Class" value="most_active_cookie"/>
-  			</manifest>
-		</jar>
-	</target>
 </project>
