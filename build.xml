@@ -1,0 +1,48 @@
+<project name="most_active_cookie" default="compile" basedir="." >
+	<description>
+	</description>
+
+	<presetdef name="my.javac">
+    	<javac includeantruntime="false" target="1.8" source="1.8" fork="yes" compiler = "javac1.7" classpathref="build.classpath"/>
+
+	</presetdef>
+	<property name="lib.dir" location="lib"/>
+	<path id="build.classpath">
+		<fileset dir="">
+		</fileset>
+	</path>
+	<property name="source.dir" location=""/> 
+	<property name="build.dir" location=""/> 
+
+	<!-- Compile the java code in src dir into build dir -->
+	<target name="compile" description="compile java sources" >
+		<my.javac srcdir="${source.dir}" destdir="${build.dir}" />
+	</target>
+	<!-- Run the java tests in src dir -->
+	<target name="test" depends="compile">
+		<junit>
+			<classpath>
+			<pathelement location="bin" />    
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			</classpath>    
+			<batchtest>
+			<fileset dir="${source.dir}">
+					<include name="**/*Test*" />
+			</fileset>
+			</batchtest>
+			<formatter type="brief" usefile="false"/>
+		</junit>
+	</target>  
+
+
+	<!-- Create jar files from java src files in dist folder-->	
+	<target name="dist" depends="compile" description="create jar files">
+		<jar destfile="most_active_cookie.jar" basedir="">
+			<manifest>
+    			<attribute name="Main-Class" value="most_active_cookie"/>
+  			</manifest>
+		</jar>
+	</target>
+</project>
